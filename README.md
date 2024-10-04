@@ -18,12 +18,12 @@ Before running the script, you need to install the following Python dependencies
 
 - `Pillow`
 - `NumPy`
+- `scikit-image`
 
 You can install the dependencies using `pip`:
 
 ```bash
-pip install pillow numpy
-```
+pip install pillow numpy scikit-image
 
 ## Usage
 
@@ -39,7 +39,8 @@ python Image_Compare.py --img1 <path_to_image1> --img2 <path_to_image2> --tolera
 
 - `--img1`: Path to the first image file.
 - `--img2`: Path to the second image file.
-- `--tolerance_value`: Tolerance percentage (0-100) to allow pixel differences between images. Default is `0`.
+- `--tolerance_value`: Tolerance percentage (0-100) to allow pixel differences between images. Default is `0`. A lower tolerance detects smaller differences between images, while a higher tolerance allows for greater pixel variations before marking them as different.
+
 
 ### Example:
 
@@ -52,9 +53,9 @@ This command compares `image1.png` and `image2.png` with a tolerance level of 5%
 ### Output:
 
 1. **Difference Images**: The script saves three images in the `output/` directory:
-   - `diff_img1.png`: Pixels different only in the first image.
-   - `diff_img2.png`: Pixels different only in the second image.
-   - `combined_diff.png`: A combined image showing differences in both images.
+   - `lab_diff_img1.png`: Pixels different only in the first image.
+   - `lab_diff_img2.png`: Pixels different only in the second image.
+   - `lab_combined_diff.png`: A combined image showing differences in both images.
 
 2. **Statistical Report**: A `comparison_report.txt` file is generated in the `output/` directory, containing:
    - Total number of pixels.
