@@ -24,18 +24,15 @@ You can install the dependencies using `pip`:
 
 ```bash
 pip install pillow numpy scikit-image
+```
 
-## Usage
-
-### Command Line Arguments
+### Command Line Arguments:
 
 The script accepts two image files as input and a tolerance value (in percentage). You can use the following command to run the script:
 
 ```bash
 python Image_Compare.py --img1 <path_to_image1> --img2 <path_to_image2> --tolerance_value <tolerance_percentage>
 ```
-
-### Arguments:
 
 - `--img1`: Path to the first image file.
 - `--img2`: Path to the second image file.
