@@ -3,12 +3,14 @@
 import pytest
 import os
 import sys
+sys.path.append('../src')
+import image_compare
 import argparse
 from color_similarity_detection_technique import ImageCompare
-import image_compare
+
 
 # Paths for test images and expected outputs
-TEST_DATA_DIR = "test_data/"
+TEST_DATA_DIR = "../test_data/"
 OUTPUT_DIR = "output/"
 
 # Helper function to clean up the output folder after each test

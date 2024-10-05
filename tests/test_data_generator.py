@@ -5,7 +5,7 @@ import numpy as np
 import os
 
 # Directory to save the test images
-TEST_DATA_DIR = "test_data"
+TEST_DATA_DIR = "../test_data"
 os.makedirs(TEST_DATA_DIR, exist_ok=True)
 
 # Create a simple image
