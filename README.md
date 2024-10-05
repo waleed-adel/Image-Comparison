@@ -76,11 +76,49 @@ This command compares `image1.png` and `image2.png` with a tolerance level of 5%
    - The report includes the total number of pixels, the number of differing pixels, the percentage of different pixels, and the tolerance level.
 
 
+## Algorithm: Image Comparison with Tolerance-Based Pixel Evaluation
+The image comparison algorithm implemented in this project performs pixel-by-pixel evaluation of two images, allowing for a user-defined tolerance level to account for minor differences. 
+The core logic of the comparison is encapsulated in the ImageCompare class and works as follows:
+
+### 1. **Image Loading and Validation**:
+- The algorithm first loads two images using the Python Imaging Library (PIL).
+- It validates that the images have the same size and mode (e.g., RGB, Grayscale). If the sizes or modes differ, the comparison process halts with an error.
+
+### 2. **Pixel-by-Pixel Comparison**:
+- The algorithm computes the absolute difference between the two images using ImageChops.difference(). This method subtracts pixel values from one image from the corresponding pixels in the other image.
+- The result is a new image where each pixel represents the difference in intensity between the corresponding pixels in the input images.
+
+### 3. **Tolerance Application**:
+- A tolerance value (0-100%) is provided by the user to define how much of a pixel difference is acceptable before considering it a difference.
+- For each pixel, the algorithm checks if the difference exceeds the tolerance threshold:
+  - RGB Images: Each pixel contains three color channels (Red, Green, Blue). The algorithm evaluates all three channels and flags a pixel as different if any channel exceeds the tolerance.
+  - Grayscale Images: Each pixel is a single value, and the algorithm checks whether the intensity difference exceeds the tolerance
+
+### 4. **Difference Mask Generation**:
+- A mask is generated that highlights the pixels where differences were detected. This mask is a boolean array where True indicates a differing pixel.
+- The algorithm counts the number of differing pixels and calculates the total number of pixels, as well as the percentage of pixels that differ.
+
+### 5. **Output Generation**:
+- The algorithm saves three difference images:
+  - Image 1 Differences: Highlights pixels that differ from Image 1.
+  - Image 2 Differences: Highlights pixels that differ from Image 2.
+  - Combined Differences: Shows all differing pixels from both images in one overlay.
+- A detailed statistical report is generated, summarizing the following:
+  - Total number of pixels.
+  - Number and percentage of differing pixels.
+  - Tolerance level used.
+
+### 6. **Error Handling**:
+- The algorithm performs extensive validation on input images and parameters, including checks for:
+  - Invalid file paths or image formats.
+  - Inconsistent image sizes or modes.
+  - Invalid or out-of-bounds tolerance values.
+
+
 ## Automated Testing
 
-This repository includes automated test cases for the image comparison script. Below are the instructions for setting up and running the automated tests:
-
-### 1. **Needed Libraries and Installation**:
+This repository includes automated test cases for the image comparison script. 
+Below are the instructions for setting up and running the automated tests:
 
 Before running the tests, you need to install the following Python libraries:
 
