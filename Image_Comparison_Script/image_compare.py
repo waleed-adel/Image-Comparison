@@ -2,38 +2,34 @@
 
 import os
 import argparse
-from Color_Similarity_Detection_Technique import ImageCompare  # Import the ImageCompare class
+from color_similarity_detection_technique import ImageCompare  # Import the ImageCompare class
 
-# Allowed image extensions for input validation
 VALID_IMAGE_EXTENSIONS = ('.jpg', '.jpeg', '.png', '.bmp', '.tiff', '.gif')
 
-
 """
-Description:
-    Parse command-line arguments.
-Returns:
-    argparse.Namespace: Parsed arguments including image paths and tolerance.
+    Description:
+        Parses command-line arguments for image file paths and tolerance values.
+    Returns:
+        argparse.Namespace: Parsed arguments for image paths and tolerance values.
 """
 def parse_arguments():
-   
-    parser = argparse.ArgumentParser(description="Compare two image files using Lab color space.")
+    parser = argparse.ArgumentParser(description="Compare two image files pixel by pixel using a tolerance value.")
     parser.add_argument("--img1", type=check_image_file_format_validity, required=True, help="First image file to compare")
     parser.add_argument("--img2", type=check_image_file_format_validity, required=True, help="Second image file to compare")
     parser.add_argument("--tolerance_value", type=check_tolerance_value_validity, default=0, help="Tolerance value (0-100)")
     return parser.parse_args()
 
 """
-Description:
-    Validate the image file format and check if it exists.
-Args:
-    file_path (str): File path to the image.
-Returns:
-    str: Validated file path.
-Raises:
-    argparse.ArgumentTypeError: If the file does not exist or is not a valid image format.
+    Description:
+        Validates that the provided file path exists and has a valid image extension.
+    Args:
+        file_path (str): The file path to validate.
+    Returns:
+        str: The validated file path.
+    Raises:
+        argparse.ArgumentTypeError: If the file does not exist or the format is invalid.
 """
 def check_image_file_format_validity(file_path):
-   
     if not os.path.isfile(file_path):
         raise argparse.ArgumentTypeError(f"File '{file_path}' does not exist.")
     if not file_path.lower().endswith(VALID_IMAGE_EXTENSIONS):
@@ -41,17 +37,16 @@ def check_image_file_format_validity(file_path):
     return file_path
 
 """
-Description:
-    Validate the tolerance value (must be between 0 and 100).
-Args:
-    value (float): Tolerance value entered by the user.
-Returns:
-    float: Validated tolerance value.
-Raises:
-    argparse.ArgumentTypeError: If the tolerance value is not a valid number or is out of range.
+    Description:
+        Validates that the tolerance value is a valid float between 0 and 100.
+    Args:
+        value (str): The tolerance value provided as a string.
+    Returns:
+        float: The validated tolerance value.
+    Raises:
+        argparse.ArgumentTypeError: If the value is not a float or out of bounds (0-100).
 """
 def check_tolerance_value_validity(value):
-    
     try:
         value = float(value)
     except ValueError:
@@ -60,25 +55,24 @@ def check_tolerance_value_validity(value):
         raise argparse.ArgumentTypeError(f"Tolerance value '{value}' must be between 0 and 100.")
     return value
 
-
+"""
+    Description:
+        Main function that handles the image comparison process using the parsed arguments.
+    - Loads the images.
+    - Compares the images pixel by pixel.
+    - Generates difference images and a report.
+"""
 def main():
-    
     args = parse_arguments()
     comparer = ImageCompare(args.img1, args.img2, args.tolerance_value)
     
-    # Output the image file paths and tolerance value
     print(f"Comparing Image 1: {args.img1}")
     print(f"Comparing Image 2: {args.img2}")
     print(f"Tolerance Value: {args.tolerance_value}%")
 
-    # Compare the images and generate difference images
-    lab_diff, num_differences, total_pixels = comparer.compare_images()
-    comparer.save_difference_images(comparer.img1, comparer.img2, lab_diff, args.tolerance_value)
-
-    # Generate and print the comparison report
+    mask, num_differences, total_pixels = comparer.compare_images()
+    comparer.save_difference_images(comparer.img1, comparer.img2, mask)
     comparer.generate_report(num_differences, total_pixels, args.tolerance_value)
-
 
 if __name__ == "__main__":
     main()
-
