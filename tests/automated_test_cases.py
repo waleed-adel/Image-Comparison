@@ -11,7 +11,7 @@ from color_similarity_detection_technique import ImageCompare
 
 # Paths for test images and expected outputs
 TEST_DATA_DIR = "../test_data/"
-OUTPUT_DIR = "output/"
+OUTPUT_DIR = "testcase_output/"
 
 # Helper function to clean up the output folder after each test
 @pytest.fixture(autouse=True)
@@ -101,7 +101,7 @@ def test_correct_report_generation():
     mask, num_differences, total_pixels = comparer.compare_images()
     
     comparer.generate_report(num_differences, total_pixels, 0, output_file=f"{OUTPUT_DIR}/test_report.txt")
-    assert os.path.exists(f"{OUTPUT_DIR}/test_report.txt"), "Report file not created."
+    assert os.path.exists(f"{OUTPUT_DIR}/test_report.txt"), "Report file created."
 
 # Test Case 10: Report File Creation
 def test_report_file_creation():
@@ -110,33 +110,37 @@ def test_report_file_creation():
     comparer = ImageCompare(img1_path, img2_path, tolerance=0)
     comparer.generate_report(10, 1000, 0, output_file=f"{OUTPUT_DIR}/test_report.txt")
     
-    assert os.path.exists(f"{OUTPUT_DIR}/test_report.txt"), "Report file not created."
+    assert os.path.exists(f"{OUTPUT_DIR}/test_report.txt"), "Report file created."
 
 # Test Case 11: Correct Image Output Generation for RGB
-def test_image_output_generation():
+def test_rgb_image_output_generation():
     img1_path = f"{TEST_DATA_DIR}/image1.jpg"
     img2_path = f"{TEST_DATA_DIR}/image2.jpg"
     comparer = ImageCompare(img1_path, img2_path, tolerance=0)
     mask, num_differences, total_pixels = comparer.compare_images()
     comparer.save_difference_images(comparer.img1, comparer.img2, mask, output_dir=OUTPUT_DIR)
     
+    assert os.path.exists(f"{OUTPUT_DIR}/diff_img1.png"), "Diff image 1 created."
+    assert os.path.exists(f"{OUTPUT_DIR}/diff_img2.png"), "Diff image 2 created."
+    assert os.path.exists(f"{OUTPUT_DIR}/combined_diff.png"), "Combined diff image created."
+    
 # Test Case 12: Correct Image Output Generation for grayscale
-def test_image_output_generation():
+def test_grayscale_image_output_generation():
     img1_path = f"{TEST_DATA_DIR}/image1_grayscale.jpg"
     img2_path = f"{TEST_DATA_DIR}/image1_grayscale.jpg"
     comparer = ImageCompare(img1_path, img2_path, tolerance=0)
     mask, num_differences, total_pixels = comparer.compare_images()
     comparer.save_difference_images(comparer.img1, comparer.img2, mask, output_dir=OUTPUT_DIR)
     
-    assert os.path.exists(f"{OUTPUT_DIR}/diff_img1.png"), "Diff image 1 not created."
-    assert os.path.exists(f"{OUTPUT_DIR}/diff_img2.png"), "Diff image 2 not created."
-    assert os.path.exists(f"{OUTPUT_DIR}/combined_diff.png"), "Combined diff image not created."
+    assert os.path.exists(f"{OUTPUT_DIR}/diff_img1.png"), "Diff image 1 created."
+    assert os.path.exists(f"{OUTPUT_DIR}/diff_img2.png"), "Diff image 2 created."
+    assert os.path.exists(f"{OUTPUT_DIR}/combined_diff.png"), "Combined diff image created."
 
 # Test Case13: Compare grayscale image with RGB image
 def test_grayscale_vs_rgb_image():
     # Generate RGB image with a green background
     rgb_image_path = f"{TEST_DATA_DIR}/image1.jpg"
-    grayscale_image_path = f"{TEST_DATA_DIR}/image_grayscale.jpg"
+    grayscale_image_path = f"{TEST_DATA_DIR}/image1_grayscale.jpg"
 
     # Expect a ValueError due to image mode mismatch
     with pytest.raises(ValueError, match="Image modes do not match: RGB vs L"):
@@ -198,8 +202,8 @@ def test_valid_image_files():
     image_compare.main(args)
 
     # Assert the expected output, such as the report file or output images
-    expected_output = 'output/diff_img1.png'  # Replace with actual output file
-    assert os.path.exists(expected_output), f"Expected output file {expected_output} not found."
+    expected_output = 'testcase_output/diff_img1.png'  # Replace with actual output file
+    assert os.path.exists(expected_output), f"Expected output file {expected_output} found."
 
 # Test Case 19: Testing passing an invalid image format
 def test_invalid_image_format():

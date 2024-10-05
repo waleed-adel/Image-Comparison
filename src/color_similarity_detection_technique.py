@@ -98,7 +98,7 @@ class ImageCompare:
         output_dir (str): The directory to save the output difference images.
     """
     @staticmethod
-    def save_difference_images(img1, img2, mask, output_dir="output"):
+    def save_difference_images(img1, img2, mask, output_dir="../tests/testcase_output"):
         os.makedirs(output_dir, exist_ok=True)
 
         # Convert images to RGB mode if they are not already in RGB
@@ -137,7 +137,7 @@ class ImageCompare:
         output_file (str): The path to save the report file.
     """
     @staticmethod
-    def generate_report(num_differences, total_pixels, tolerance, output_file="output/comparison_report.txt"):
+    def generate_report(num_differences, total_pixels, tolerance, output_file="../tests/testcase_output/comparison_report.txt"):
         diff_percentage = (num_differences / total_pixels) * 100
         Similar = "" if num_differences == 0 else "not"  # Check if the images are identical
     

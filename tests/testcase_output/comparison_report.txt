@@ -1,0 +1,6 @@
+Image Comparison Report:
+The Images are  Similar
+Total Pixels: 10000
+Pixels Differing: 0
+Difference Percentage: 0.00%
+Tolerance Value: 100.0%
