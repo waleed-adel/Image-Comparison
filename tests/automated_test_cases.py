@@ -2,10 +2,10 @@
 
 import pytest
 import os
+import argparse
 import sys
 sys.path.append('../src')
 import image_compare
-import argparse
 from color_similarity_detection_technique import ImageCompare
 
 
@@ -190,8 +190,8 @@ def test_4000x4000_images():
 # Test case for comparing two valid image files with no tolerance.
 # Asserts that the function runs successfully and outputs are generated.
 def test_valid_image_files():
-    valid_img1 = 'test_data/image1.jpg'
-    valid_img2 = 'test_data/image2.jpg'
+    valid_img1 = '../test_data/image1.jpg'
+    valid_img2 = '../test_data/image2.jpg'
     args = ['--img1', valid_img1, '--img2', valid_img2, '--tolerance_value', '10']
 
     # Run the comparison
@@ -204,30 +204,30 @@ def test_valid_image_files():
 # Test Case 19: Testing passing an invalid image format
 def test_invalid_image_format():
     # Paths to image files, one with an invalid format
-    valid_img1 = 'test_data/image1.jpg'
-    invalid_img2 = 'test_data/invalid_image.pdf'
+    valid_img1 = '../test_data/image1.jpg'
+    invalid_img2 = '../test_data/invalid_image.pdf'
 
     # Run the image comparison function and expect an error
     args = ['--img1', valid_img1, '--img2', invalid_img2, '--tolerance_value', '10']
-    with pytest.raises(argparse.ArgumentTypeError, match="File 'test_data/invalid_image.pdf' is not a valid image format."):
+    with pytest.raises(argparse.ArgumentTypeError, match="File '../test_data/invalid_image.pdf' is not a valid image format."):
         image_compare.main(args)
         
 # Test Case 20: Testing passing missing image file
 def test_missing_image_file():
     # Paths to image files, one missing
-    valid_img1 = 'test_data/image1.jpg'
-    missing_img2 = 'test_data/non_existing_image.jpg'
+    valid_img1 = '../test_data/image1.jpg'
+    missing_img2 = '../test_data/non_existing_image.jpg'
 
     # Run the image comparison function and expect an error
     args = ['--img1', valid_img1, '--img2', missing_img2, '--tolerance_value', '10']
-    with pytest.raises(argparse.ArgumentTypeError, match="File 'test_data/non_existing_image.jpg' does not exist."):
+    with pytest.raises(argparse.ArgumentTypeError, match="File '../test_data/non_existing_image.jpg' does not exist."):
         image_compare.main(args)
 
 # Test Case 21: Testing passing different image formats
 def test_different_image_formats():
     # Paths to image files, with different formats
-    jpg_img = 'test_data/image1.jpg'
-    png_img = 'test_data/image1.png'
+    jpg_img = '../test_data/image1.jpg'
+    png_img = '../test_data/image1.png'
 
     # Run the image comparison function and expect an error
     args = ['--img1', jpg_img, '--img2', png_img, '--tolerance_value', '10']
@@ -238,8 +238,8 @@ def test_different_image_formats():
 # Test case for comparing two valid images with a valid tolerance value.
 # Asserts that the function runs successfully without raising an error.
 def test_valid_tolerance_value():
-    valid_img1 = 'test_data/image1.jpg'
-    valid_img2 = 'test_data/image2.jpg'
+    valid_img1 = '../test_data/image1.jpg'
+    valid_img2 = '../test_data/image2.jpg'
     args = ['--img1', valid_img1, '--img2', valid_img2, '--tolerance_value', '10']
 
     # Run the comparison
@@ -252,8 +252,8 @@ def test_valid_tolerance_value():
 # Test Case 23: Testing for Inalid Tolerance Value
 def test_invalid_tolerance_value():
     # Paths to valid image files
-    valid_img1 = 'test_data/image1.jpg'
-    valid_img2 = 'test_data/image2.jpg'
+    valid_img1 = '../test_data/image1.jpg'
+    valid_img2 = '../test_data/image2.jpg'
 
     # Run the image comparison function with an invalid tolerance value
     args = ['--img1', valid_img1, '--img2', valid_img2, '--tolerance_value', '120']
@@ -263,8 +263,8 @@ def test_invalid_tolerance_value():
 # Test Case 24: Testing invalid image file opening.
 # This test verifies that an ArgumentTypeError is raised when trying to open a corrupted image file.
 def test_invalid_image_file_open():
-    invalid_img = 'test_data/corrupted_image1.jpg'  # Assuming this is corrupted
-    args = ['--img1', invalid_img, '--img2', 'test_data/image2.jpg', '--tolerance_value', '10']
+    invalid_img = '../test_data/corrupted_image1.jpg'  # Assuming this is corrupted
+    args = ['--img1', invalid_img, '--img2', '../test_data/image2.jpg', '--tolerance_value', '10']
 
     with pytest.raises(argparse.ArgumentTypeError, match="Could not open image"):
         image_compare.main(args)
@@ -272,7 +272,7 @@ def test_invalid_image_file_open():
 # Test Case 25: Testing string tolerance value.
 # This test verifies that an ArgumentTypeError is raised when the tolerance value is a non-numeric string.
 def test_string_tolerance_value():
-    args = ['--img1', 'test_data/image1.jpg', '--img2', 'test_data/image1.jpg', '--tolerance_value', 'abc']
+    args = ['--img1', '../test_data/image1.jpg', '--img2', '../test_data/image1.jpg', '--tolerance_value', 'abc']
 
     with pytest.raises(argparse.ArgumentTypeError, match="Tolerance value 'abc' is not a valid number."):
         image_compare.main(args)
@@ -280,7 +280,7 @@ def test_string_tolerance_value():
 # Test Case 26: Testing sys.argv usage.
 # This test verifies that the script can handle arguments passed via sys.argv.
 def test_sys_argv_usage(monkeypatch):
-    monkeypatch.setattr(sys, 'argv', ['image_compare.py', '--img1', 'test_data/image1.jpg', '--img2', 'test_data/image2.jpg', '--tolerance_value', '10'])
+    monkeypatch.setattr(sys, 'argv', ['image_compare.py', '--img1', '../test_data/image1.jpg', '--img2', '../test_data/image2.jpg', '--tolerance_value', '10'])
     image_compare.main()
 
 

@@ -115,7 +115,8 @@ Here are the commands you can use to execute the tests and generate various repo
 To run the test cases and generate an HTML report (test_report.html), execute the following command:
 
 ```bash
-python3 -m pytest --html=test_report.html --self-contained-html automated_test_cases.py
+cd tests
+python3 -m pytest --html=../output/test_report.html --self-contained-html automated_test_cases.py
 ```
 This will run the tests and output the results to test_report.html, which can be opened in any web browser.
 
@@ -124,7 +125,8 @@ To measure the code coverage of your test cases, use the following commands:
 
 ```bash
 coverage run -m pytest automated_test_cases.py
-coverage html
+coverage html -d ../output/coverage
+
 ```
 
 These commands will measure the coverage and generate an HTML report. 
